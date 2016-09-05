@@ -22,6 +22,8 @@ awk 'FNR==1{print $1}' reconSeg* > ents.matrix
 
 In the current format, ents.matrix must be class-balanced and it will be divided in 2/3 for train and 1/3 for test. Train and Test must be sorted too, in order to ensure that your test data is not contaminating your train set.
 
+##Classification
+
 Once you have the space I recommend you to set up the names and the classes in different files. Suppose we have all.names and all.classes with the names and the classes for malware and benign-ware. Then, we call the the classifier as follows:
 ```
 ./ents.r ents.matrix ENTS all.classes all.names
