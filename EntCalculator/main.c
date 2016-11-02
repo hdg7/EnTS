@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "entropy.h"
 #include "tools.h"
 #include "wavelet.h"
@@ -141,10 +142,17 @@
 
 	setinifile("config.ini");
 	 
-	readConfigurationS("Files","original",line,LINE_L);
+	if (readConfigurationS("Files","original",line,LINE_L)!=CONFIG_OK)
+	{
+                perror("Configuration File Error");
+		return -1;
+	}
 	FILE* originalSegment = fopen(strcat(line,filein),"w");
 	if(originalSegment == NULL)
+	{
 		perror("Can't read original segment");
+		return -1;
+	}
 	readConfigurationS("Files","subseq",line,LINE_L);
 	FILE* subsegment = fopen(strcat(line,filein),"w");
 	if(subsegment == NULL)
@@ -239,6 +247,8 @@ int commandDirectory(char * directory){
 	char line[LINE_L];
 	FILE * listFiles;
 	char ch;
+	char pid[LINE_L];
+	char filename[LINE_L];
 	int sizeFile=0;
 	segmentation_t* segmentationList;
 //	distmatrix_t distMatrix;
@@ -247,10 +257,17 @@ int commandDirectory(char * directory){
 	int i,j;
 	strcpy(lsCommand,"ls ");
 	strcat(lsCommand,directory);
-	strcat(lsCommand,"*.bin > file.ini");
+	strcat(lsCommand,"segmentation*.bin > file.");
+	sprintf(pid,"%d",getpid());
+	strcat(lsCommand,pid);
+	strcat(lsCommand,".ini");
 	system(lsCommand);
 	
-	listFiles = fopen("file.ini","r");
+
+	strcpy(filename,"file.");
+	strcat(filename,pid);
+	strcat(filename,".ini");
+	listFiles = fopen(filename,"r");
 	
 	while(!feof(listFiles))
 	{
