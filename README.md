@@ -29,3 +29,15 @@ Once you have the space I recommend you to set up the names and the classes in d
 ./ents.r ents.matrix ENTS all.classes all.names
 ```
 This generates an output and two files: ENTS.rf.roc and ENTS.rf.class. These files contains the roc curve and the individual classification of the test set.
+
+##Structural Entropy
+
+As you might notice there are some extra files and options inherit from Structural 
+Entropy, you can generate the structural entropy segments with the -i option and 
+once you have the segments, you can use EntCalculatos to calculate a pairwise 
+comparison of all of them following structural entropy metric. To do this create a 
+folder with the segment* files and run:
+```
+./EntCalculatos -d folder/
+```
+This command will print the similarity matrix.
