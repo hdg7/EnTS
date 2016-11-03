@@ -10,6 +10,8 @@
 #include "segmentation.h"
 #include "levenshtein.h"
 #include<math.h>
+#include <libgen.h>
+#include <ctype.h>
 
 #define LINE_L 256
 
@@ -19,7 +21,7 @@
  *  - Nothing uses a config.ini file in the current folder.
  */
  
- int commandFile(char * filein){
+ int commandFile(){
 	char line[LINE_L];
 	int scaleOr=4;
 	int scaleMod=1;
@@ -40,20 +42,18 @@
 	
 	segmentation_t segmentation = NULL;
 
-	setinifile(filein);
-	 
 	readConfigurationS("Files","original",line,LINE_L);
-	FILE* originalSegment = fopen(line,"w");
+	FILE* originalSegment = fopen(basename(line),"w");
 	readConfigurationS("Files","subseq",line,LINE_L);
-	FILE* subsegment = fopen(line,"w");
+	FILE* subsegment = fopen(basename(line),"w");
 	readConfigurationS("Files","wavelet",line,LINE_L);
-	FILE* waveletFile = fopen(line,"w");
+	FILE* waveletFile = fopen(basename(line),"w");
 	readConfigurationS("Files","reconstruction",line,LINE_L);
-	FILE* reconFile = fopen(line,"w");
+	FILE* reconFile = fopen(basename(line),"w");
 	readConfigurationS("Files","segments",line,LINE_L);
-	FILE* segmentFile = fopen(line,"w");
+	FILE* segmentFile = fopen(basename(line),"w");
 	readConfigurationS("Files","segmentation",line,LINE_L);
-	FILE* segmentationFile = fopen(line,"w");
+	FILE* segmentationFile = fopen(basename(line),"w");
 	
 	/*Reading Values*/
 	readConfigurationI("Values","scaleOr",&scaleOr);
@@ -140,37 +140,35 @@
 	
 	segmentation_t segmentation = NULL;
 
-	setinifile("config.ini");
-	 
 	if (readConfigurationS("Files","original",line,LINE_L)!=CONFIG_OK)
 	{
                 perror("Configuration File Error");
 		return -1;
 	}
-	FILE* originalSegment = fopen(strcat(line,filein),"w");
+	FILE* originalSegment = fopen(strcat(line,basename(filein)),"w");
 	if(originalSegment == NULL)
 	{
 		perror("Can't read original segment");
 		return -1;
 	}
 	readConfigurationS("Files","subseq",line,LINE_L);
-	FILE* subsegment = fopen(strcat(line,filein),"w");
+	FILE* subsegment = fopen(strcat(line,basename(filein)),"w");
 	if(subsegment == NULL)
 		perror("Can't read original segment");
 	readConfigurationS("Files","wavelet",line,LINE_L);
-	FILE* waveletFile = fopen(strcat(line,filein),"w");
+	FILE* waveletFile = fopen(strcat(line,basename(filein)),"w");
 	if(waveletFile == NULL)
 		perror("Can't read original segment");
 	readConfigurationS("Files","reconstruction",line,LINE_L);
-	FILE* reconFile = fopen(strcat(line,filein),"w");
+	FILE* reconFile = fopen(strcat(line,basename(filein)),"w");
 	if(reconFile == NULL)
 		perror("Can't read original segment");
 	readConfigurationS("Files","segments",line,LINE_L);
-	FILE* segmentFile = fopen(strcat(line,filein),"w");
+	FILE* segmentFile = fopen(strcat(line,basename(filein)),"w");
 	if(segmentFile == NULL)
 		perror("Can't read original segment");
 	readConfigurationS("Files","segmentation",line,LINE_L);
-	FILE* segmentationFile = fopen(strcat(line,filein),"w");
+	FILE* segmentationFile = fopen(strcat(line,basename(filein)),"w");
 	if(segmentationFile == NULL)
 		perror("Can't read original segment");
 	
@@ -257,7 +255,7 @@ int commandDirectory(char * directory){
 	int i,j;
 	strcpy(lsCommand,"ls ");
 	strcat(lsCommand,directory);
-	strcat(lsCommand,"segmentation*.bin > file.");
+	strcat(lsCommand,"segmentation* > file.");
 	sprintf(pid,"%d",getpid());
 	strcat(lsCommand,pid);
 	strcat(lsCommand,".ini");
@@ -308,25 +306,94 @@ int commandDirectory(char * directory){
 	//printMatrix(distMatrix);
 	return 0;
 }
+
 int main(int argc, char **argv)
 {
+  int iflag = 0;
+  int dflag = 0;
+  int fflag = 0;
+  char *fileInput = NULL;
+  int c;
+
+  setinifile("config.ini");
 	
+  while ((c = getopt (argc, argv, "f:i:d:")) != -1)
+  {
+    switch (c)
+      {
+      case 'f':
+        fflag = 1;
+	if(optarg==NULL)
+	{
+          fprintf (stderr, "Option `-%c' expects an input config file\n", optopt);
+	  return 1;
+	}
+        setinifile(optarg);
+        break;
+      case 'i':
+        iflag = 1;
+	fileInput = malloc(sizeof(char)*LINE_L);
+        if(fileInput==NULL)
+        {
+                printf("Muerte y destrucción");
+        }
+        strcpy(fileInput,optarg);
+        break;
+      case 'd':
+        dflag = 1;
+	fileInput = malloc(sizeof(char)*LINE_L);
+        if(fileInput==NULL)
+        {
+                printf("Muerte y destrucción");
+        }
+        strcpy(fileInput,optarg);
+        break;
+      case '?':
+        if (isprint (optopt))
+          fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+        else
+          fprintf (stderr,
+                   "Unknown option character `\\x%x'.\n",
+                   optopt);
+        return 1;
+      default:
+        abort ();
+      }
+ }
+
+if (fileInput !=NULL)
+  printf ("fflag = %d, iflag = %d, dflag = %d, filename =%s\n ",
+          fflag, iflag, dflag,fileInput);
+else
+  printf ("fflag = %d, iflag = %d, dflag = %d\n ",
+          fflag, iflag, dflag);
+//   for (index = optind; index < argc; index++)
+//     printf ("Non-option argument %s\n", argv[index]);
+
+
+
+
 //	segmentation_t segmentation = NULL;
 //	segmentation_t segmentationAux = NULL;
 
-	if(argc < 2)
+	if(dflag && !(iflag || fflag))
 	{
-		setinifile("config.ini");
+                commandDirectory(fileInput);
+		printf("dflag\n");
 	}
-	else if(!strncmp(argv[1],"-f",2)){
-		commandFile(argv[2]);
+	else if(iflag && !dflag){
+		commandInput(fileInput);
+                printf("iflag\n");
 	}
-	else if(!strncmp(argv[1],"-i",2)){
-		commandInput(argv[2]);
+	else if(!iflag && fflag && !dflag){
+		commandFile();
+                printf("fflag\n");
 	}
-	else if(!strncmp(argv[1],"-d",2)){
-		commandDirectory(argv[2]);
+	else {
+		printf("The arguments combination is wrong\n");
 	}
+
+
 //	segmentation = defineSegmentation(sublist,segments);
 	
 	
