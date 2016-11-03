@@ -52,6 +52,20 @@ R (from the visualization folder) as follows:
 >library(shiny)
 >runApp(".")
 ```
-In server.R you need to set the variable inEnTS to your entCalculator program
+In server.R you need to set the variable inEnTS to your entCalculator program. You can see a visualization example
+ below:
 
 ![alt tag](http://freedevelop.org/wp-content/uploads/DABE.png)
+
+##Compile
+
+You can compile the program using make. If you need to modify it, just change the Makefile. In EntCalculator folder 
+run:
+```
+make
+```
+The classifier works in R, you only need to ensure that you have all the proper libraries installed.
+
+
+
+
