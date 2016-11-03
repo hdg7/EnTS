@@ -54,3 +54,4 @@ R (from the visualization folder) as follows:
 ```
 In server.R you need to set the variable inEnTS to your entCalculator program
 
+![alt tag](http://freedevelop.org/wp-content/uploads/DABE.png)
