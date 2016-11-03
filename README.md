@@ -13,7 +13,7 @@ To create an entropy profile you need a configuration file, you can find an exam
 
 The command to create an Entropy Profile from a specific file is:
 ```
-./EntCalculatos -i file.bin 
+./entCalculator -i file.bin 
 ```
 The output, depending on your configuration file, will provide you a lot of information about the original profile, the sub-profile, the wavelet and the final reconstruction. In EnTS we use the last one. If you want to create the space from a big set of files, you only need to put everything in a matrix style. I recommend you to use AWK for that:
 ```
@@ -38,6 +38,6 @@ once you have the segments, you can use EntCalculatos to calculate a pairwise
 comparison of all of them following structural entropy metric. To do this create a 
 folder with the segment* files and run:
 ```
-./EntCalculatos -d folder/
+./entCalculator -d folder/
 ```
 This command will print the similarity matrix.
