@@ -1,5 +1,5 @@
 library(shiny)
-inEnTS <- "/Users/nalshahwan/EnTS/EntCalculator/entCalculator"
+inEnTS <- "../EntCalculator/entCalculator"
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {

@@ -41,3 +41,16 @@ folder with the segment* files and run:
 ./entCalculator -d folder/
 ```
 This command will print the similarity matrix.
+
+##Visualization
+
+We provide a small Shiny visualization framework for R. This is designed to show the original entropy profile, the 
+chosen subsequence, the wavelet decomposition and the final reconstruction. EnTS uses the whole reconstraction, while
+Structural Entropy uses only the average information from the selected segments (highlight in red). You can run it in
+R (from the visualization folder) as follows:
+```
+>library(shiny)
+>runApp(".")
+```
+In server.R you need to set the variable inEnTS to your entCalculator program
+
