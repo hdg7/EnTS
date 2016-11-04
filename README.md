@@ -57,6 +57,18 @@ In server.R you need to set the variable inEnTS to your entCalculator program. Y
 
 ![alt tag](http://freedevelop.org/wp-content/uploads/DABE.png)
 
+To visualize a similarity/distance matrix you can use the script imgSim.r. You can call the script as follows:
+```
+./imgSim.r matrix example.pdf Example
+``` 
+where matrix is the matrix you want to plot, example.pdf is the output and "Example" is the plot title. You can see an
+example below:
+
+![alt tag](http://freedevelop.org/wp-content/uploads/ExampleMatrix2.png)
+
+The script considers that the Rscript interpreter in /usr/local/bin/Rscript, if that is not your case, just change the
+first line with the proper path.
+
 ##Compile
 
 You can compile the program using make. If you need to modify it, just change the Makefile. In EntCalculator folder 
