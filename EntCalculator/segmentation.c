@@ -34,6 +34,9 @@ sequence_t defineSegments(sequence_t reconstruction){
 		if(segments->seq[numberSegments-1]!=i){
 			segments->seq[numberSegments]=i;
 			numberSegments++;
+//	__CPROVER_assume(reconstruction!=NULL)
+	assert(0);
+
 		}
 	}
 	else{
@@ -118,7 +121,6 @@ segmentation_t readSegmentation(char * fileName){
 	double segmentEntropy;
 	char ch;
 	segmentation_t segmentation = newSegmentation();
-	
 	file=fopen(fileName,"r");
 	if(file == NULL)
 		perror("File does not exists.\n");
