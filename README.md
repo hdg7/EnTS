@@ -7,7 +7,7 @@ This repository is divided into two folder:
 - EntCalculator: Creates the Entropy Profiles and also contains a Structural Entropy implementation.
 - Classifier: Classifies the profiles in different classes.
 
-##Creating Entropy profiles
+## Creating Entropy profiles
 
 To create an entropy profile you need a configuration file, you can find an example in config.ini.
 
@@ -22,7 +22,7 @@ awk 'FNR==1{print $1}' reconSeg* > ents.matrix
 
 In the current format, ents.matrix must be class-balanced and it will be divided in 2/3 for train and 1/3 for test. Train and Test must be sorted too, in order to ensure that your test data is not contaminating your train set.
 
-##Classification
+## Classification
 
 Once you have the space I recommend you to set up the names and the classes in different files. Suppose we have all.names and all.classes with the names and the classes for malware and benign-ware. Then, we call the the classifier as follows:
 ```
@@ -30,7 +30,7 @@ Once you have the space I recommend you to set up the names and the classes in d
 ```
 This generates an output and two files: ENTS.rf.roc and ENTS.rf.class. These files contains the roc curve and the individual classification of the test set.
 
-##Structural Entropy
+## Structural Entropy
 
 As you might notice there are some extra files and options inherit from Structural 
 Entropy, you can generate the structural entropy segments with the -i option and 
@@ -42,7 +42,7 @@ folder with the segment* files and run:
 ```
 This command will print the similarity matrix.
 
-##Visualization
+## Visualization
 
 We provide a small Shiny visualization framework for R. This is designed to show the original entropy profile, the 
 chosen subsequence, the wavelet decomposition and the final reconstruction. EnTS uses the whole reconstraction, while
@@ -69,7 +69,7 @@ example below:
 The script considers that the Rscript interpreter in /usr/local/bin/Rscript, if that is not your case, just change the
 first line with the proper path.
 
-##Compile
+## Compile
 
 You can compile the program using make. If you need to modify it, just change the Makefile. In EntCalculator folder 
 run:
