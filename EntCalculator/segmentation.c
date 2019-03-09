@@ -34,8 +34,6 @@ sequence_t defineSegments(sequence_t reconstruction){
 		if(segments->seq[numberSegments-1]!=i){
 			segments->seq[numberSegments]=i;
 			numberSegments++;
-//	__CPROVER_assume(reconstruction!=NULL)
-	assert(0);
 
 		}
 	}
